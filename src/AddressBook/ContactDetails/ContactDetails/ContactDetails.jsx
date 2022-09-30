@@ -8,29 +8,22 @@ import Placeholder from "../Placeholder/Placeholder";
 import "./ContactDetails.css";
 
 const ContactDetails = ({ data, hasFailedToFetch }) => {
-  const { name, phone, addressLines } = (data || {});
+  const { name, phone, addressLines } = data || {};
 
   const wrapped = (node) => (
-    <section className="ContactDetails">
-      {node}
-    </section>
+    <section className="ContactDetails">{node}</section>
   );
 
   if (hasFailedToFetch) {
-    return wrapped(
-      <FetchFailure className="ContactDetails_failure" />,
-    );
+    return wrapped(<FetchFailure className="ContactDetails_failure" />);
   }
 
   if (!data) {
-    return wrapped(
-      <Placeholder className="ContactDetails_placeholder" />,
-    );
+    return wrapped(<Placeholder className="ContactDetails_placeholder" />);
   }
 
   return wrapped(
     <div className="ContactDetails_data">
-
       <div className="ContactDetails_data_item ContactDetails_name">
         <span>Name</span>
         <span>{name}</span>
@@ -41,13 +34,14 @@ const ContactDetails = ({ data, hasFailedToFetch }) => {
         <span>{phone}</span>
       </div>
 
-      {/* TODO something is wrong here */}
+      {/* DONE */}
       <div className="ContactDetails_data_item ContactDetails_address">
         <span>Address</span>
-        <span>{addressLines[0]}</span>
+        {addressLines.map((al, i) => (
+          <span key={i}>{al}</span>
+        ))}
       </div>
-
-    </div>,
+    </div>
   );
 };
 
@@ -60,11 +54,9 @@ ContactDetails.propTypes = {
   hasFailedToFetch: PropTypes.bool.isRequired,
 };
 
-const mapReduxStateToProps = state => ({
+const mapReduxStateToProps = (state) => ({
   data: state.addressBook.contacts.fetchedContact,
   hasFailedToFetch: state.addressBook.contacts.fetchFailure,
 });
 
-export default connect(
-  mapReduxStateToProps,
-)(ContactDetails);
+export default connect(mapReduxStateToProps)(ContactDetails);

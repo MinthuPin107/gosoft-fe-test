@@ -24,11 +24,11 @@ const MatchingContacts = (
           {...downshiftGetItemProps({
             key: item.id,
             item: item,
-            // TODO something is wrong here
+            // DONE
             className: classNames(
               "MatchingContacts_item",
               {
-                "MatchingContacts_item_highlighted": false,
+                "MatchingContacts_item_highlighted": index === highlightedIndex ? true : false,
               }),
           })}
         >

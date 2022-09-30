@@ -12,23 +12,27 @@ export const updateSearchPhrase = newPhrase =>
           id: contact.id,
           value: contact.name,
         }));
-        // TODO something is wrong here
+
+        // DONE
         dispatch(
-          searchActions.updateSearchPhraseSuccess({ matchingContacts: [] }),
+          searchActions.updateSearchPhraseSuccess({ matchingContacts: matchingContacts }),
         );
       })
       .catch(() => {
-        // TODO something is missing here
+        // DONE
+        dispatch(
+          searchActions.updateSearchPhraseFailure(),
+        );
       });
   };
 
 export const selectMatchingContact = selectedMatchingContact =>
   (dispatch, getState, { httpApi, dataCache }) => {
 
-    // TODO something is missing here
+    // DONE
     const getContactDetails = ({ id }) => {
       return httpApi
-          .getContact({ contactId: selectedMatchingContact.id })
+          .getContact({ contactId: id })
           .then(({ data }) => ({
             id: data.id,
             name: data.name,
@@ -47,13 +51,13 @@ export const selectMatchingContact = selectedMatchingContact =>
 
     getContactDetails({ id: selectedMatchingContact.id })
       .then((contactDetails) => {
-        // TODO something is missing here
+        // DONE
         dataCache.store({
-          key: contactDetails.id,
+          key: contactDetails,
         });
-        // TODO something is wrong here
+        // DONE
         dispatch(
-          contactDetailsActions.fetchContactDetailsFailure(),
+          contactDetailsActions.fetchContactDetailsSuccess({contactDetails}),
         );
       })
       .catch(() => {
